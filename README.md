@@ -21,6 +21,8 @@ Projet de sécurité informatique 2013
 
 `file` pour connaître le type réel d'un fichier
 
+`xxd` convertit en représentation hexadécimale et inversement
+
 À partir de ces 3 commandes on tire les premières conclusions suivantes
 
 * le fichier **the whirling dancers.mp3** n'est pas un fichier audio mp3 comme son extension
