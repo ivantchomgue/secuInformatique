@@ -11,7 +11,7 @@ Projet de sécurité informatique 2013
 
 ## Livrables ou sources
 
-[ftp des sources du projet](http://diamant.bde.enseeiht.fr/secu0/)
+[ftp des sources du projet](http://diamant.bde.enseeiht.fr/secu/)
 
 ## Outils et commandes nécessaires
 
