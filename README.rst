@@ -32,6 +32,8 @@ Outils et commandes nécessaires
 #. ``fcrackzip`` pour trouver le mot de passe utilisé pour chiffrer une archive zip
 
 
+Informations déterminées via les commandes précédentes 
+------------------------------------------------------
 
 À partir de ces commandes on tire les premières informations suivantes :
 
@@ -83,9 +85,17 @@ c'est-à dire en remplaçant les premiers caractères par ``00000000: ffd8 ffe1`
 la séquence ``ÿØÿà``, et en renommant le fichier en **the whirling dancers.jpg** on trouve
 enfin l'image cachée sous cette suite de chiffres.
 
+On peut alors visualiser l'image ci-dessous dont les informations complètent celles de la
+photo trouvée dans le scellé
+ 
+.. image:: img/thewhirlingdancers.jpg
 
-Chronologie
------------
+
+Chronologie de création, d'accès et de modifications des fichiers du scellé
+----------------------------------------------------------------------------
+
+Pour un système de fichier FAT, ``mactime`` nous donne la chronologie suivante, créée à 
+partir d'un fichier généré par la commande ``fls -m``
 
 .. csv-table:: Chronologie de création, d'accès et de modification des fichiers
 	:header: "Date", "Size (Bytes)", "Type", "Mode", "User ID", "Group ID", "Inode", "File Name"
@@ -135,8 +145,29 @@ Chronologie
 	"Wed Sep 28 2011 00:00:00",1441920,Accessed,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
 	"Wed Sep 28 2011 20:28:42",83416,Created,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
 
-On peut alors visualiser l'image ci-dessous dont les informations complètent celles de la
-photo trouvée dans le scellé
- 
-.. image:: img/thewhirlingdancers.jpg
+L'une des informations que l'on peut tirer de ce tableau est que l'image contient une
+archive 7z qui a été suppimée. Il convient donc de récupérer cette archive et de trouver
+ce qui s'y cache comme informations supplémentaires.
+
+Ce qui se se cache sous l'archive
+---------------------------------
+
+La commande ``icat`` de la boîte à outils sleuthkit nous permet de récupérer le fichier
+supprimé de l'image. Une fois récupérer on se rend compte que l'archive est protégée par
+un mot de passe. 
+Une attaque en force-brute de l'archive via le logiciel **rarcrak** en se limitant dans un premier
+temps à la recherche d'un mot de passe uniquement composé de lettre miniscules nous permet
+de trouver après quelques heures d'attentes le mot de passe de l'archive. **itin** !!!
+il fallait y penser en voyant le nom du fichier.
+
+Une fois l'archive dézipée on trouve une nouvelle archive zip à l'intérieur. Celle-ci est
+également chiffrée ! Pour tant de précaution elle doit bien cachée une information
+cruciale. On n'est pas au bout de nos peines.
+
+L'outil ``fcrackrzip`` de sleuthkit nous permet de trouver le mot de passe en limitant
+cette fois ci l'alphabet à des chiffres.
+On trouve alors le fameux trésor caché dans l'archive une image de carte  et un fichier htm traçant l'itinéraire de
+Toulouse au Mont Saint-Michel.
+
+L'image peut être visualisée ci-dessous 
 .. image:: img/image_map.png
