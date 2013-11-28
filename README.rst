@@ -165,8 +165,15 @@ Une fois l'archive dézipée on trouve une nouvelle archive zip à l'intérieur.
 cruciale. On n'est pas au bout de nos peines.
 
 L'outil ``fcrackrzip`` de sleuthkit nous permet de trouver le mot de passe en limitant
-cette fois ci l'alphabet à des chiffres.
-On trouve alors le fameux trésor caché dans l'archive une image de carte  et un fichier htm traçant l'itinéraire de
+cette fois ci l'alphabet à des chiffres. Mot de passe trouvé : **654321**
+Ce code peut aussi être trouvé dans le fichier excel *Liste Musiques.xls* car en
+l'imprimant dans un fichier pdf on a deux pages dont l'une correspondant à la feuille de
+calcule numéro 3 est vide. Quelque chose doit dont y être écris mais de manière illisible
+(du blanc sur du blanc par exemple). En changeant en noir la couleur de fond du fichier
+excel on trouve les mots : **Code : 654321** Bien pensé tout de même cette petite
+mascarade.
+
+On trouve idès lors le fameux trésor caché dans l'archive une image de carte  et un fichier htm traçant l'itinéraire de
 Toulouse au Mont Saint-Michel.
 
 L'image peut être visualisée ci-dessous 
