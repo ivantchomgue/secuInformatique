@@ -88,7 +88,7 @@ Chronologie
 -----------
 
 .. csv-table:: Chronologie de création, d'accès et de modification des fichiers
-	:header: "Date / Time", "Size (Bytes)", "Type", "Unix permissions", "User ID", "Group ID", "Inode", "File Name"
+	:header: "Date", "Size (Bytes)", "Type", "Mode", "User ID", "Group ID", "Inode", "File Name"
 
 	"Thu Jan 01 1970 01:00:00",1730688,N/A,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
 	"Thu Jan 01 1970 01:00:00",1845248,N/A,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
