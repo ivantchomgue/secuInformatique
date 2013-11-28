@@ -170,4 +170,5 @@ On trouve alors le fameux trésor caché dans l'archive une image de carte  et u
 Toulouse au Mont Saint-Michel.
 
 L'image peut être visualisée ci-dessous 
+
 .. image:: img/image_map.png
