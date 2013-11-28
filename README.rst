@@ -22,6 +22,9 @@ Outils et commandes nécessaires
     * ``icat <file.img> <inodeOfDeletedFile> > fileout`` permet de récupérer le fichier indexé par
     un numéro de noeud donné.  
 
+    * ``mactime`` retrace en ASCII la chronologie de modification des fichiers se trouvant dans une
+      image
+
 #. ``7z`` du paquet **p7zip-full** pour décompresser une archive 7z
 
 #. ``rarcrack`` pour trouver le mot de passe utilisé pour chiffrer une archive 7z
@@ -29,7 +32,8 @@ Outils et commandes nécessaires
 #. ``fcrackzip`` pour trouver le mot de passe utilisé pour chiffrer une archive zip
 
 
-À partir de ces 3 commandes on tire les premières conclusions suivantes :
+
+À partir de ces commandes on tire les premières informations suivantes :
 
 * Le fichier **the whirling dancers.mp3** n'est pas un fichier audio mp3 comme son extension
 l'indique. C'est un fichier de données (*data file*)
@@ -50,7 +54,7 @@ l'indique. C'est un fichier de données (*data file*)
 photo.
 
 En ouvrant le fichier **the whirling dancers.mp3** avec un éditeur tel que *vim* par
-exemple, et en appliquant la commande `:%!xxd` à ce fichier, on se rend compte que le
+exemple, et en appliquant la commande ``:%!xxd`` à ce fichier, on se rend compte que le
 fichier contient l'indication **JFIF** (*JPEG File Interchange Format*). Il s'agirait donc
 d'une image JPEG dont **l'entête a été modifiée!!!**
 
@@ -78,6 +82,58 @@ En appliquant ceci au fihier binaire **the whirling dancers.mp3**
 c'est-à dire en remplaçant les premiers caractères par ``00000000: ffd8 ffe1`` soit en binaire
 la séquence ``ÿØÿà``, et en renommant le fichier en **the whirling dancers.jpg** on trouve
 enfin l'image cachée sous cette suite de chiffres.
+
+
+Chronologie
+-----------
+
+.. csv-table:: Chronologie de création, d'accès et de modification des fichiers
+	:header: "Date", "Size", "Type", "Mode", "UID", "GID", "Meta", "File Name"
+
+	"Thu Jan 01 1970 01:00:00",1730688,changed,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
+	"Thu Jan 01 1970 01:00:00",1845248,changed,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
+	"Thu Jan 01 1970 01:00:00",83416,changed,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
+	"Thu Jan 01 1970 01:00:00",23040,changed,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
+	"Thu Jan 01 1970 01:00:00",2312320,changed,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
+	"Thu Jan 01 1970 01:00:00",883579,changed,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
+	"Thu Jan 01 1970 01:00:00",1550464,changed,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
+	"Thu Jan 01 1970 01:00:00",1861760,changed,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
+	"Thu Jan 01 1970 01:00:00",93561,changed,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
+	"Thu Jan 01 1970 01:00:00",1540224,changed,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
+	"Thu Jan 01 1970 01:00:00",1441920,changed,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
+	"Wed Oct 06 2010 19:29:14",83416,modified,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
+	"Wed Oct 06 2010 20:29:04",1730688,created,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
+	"Wed Oct 06 2010 20:29:04",1845248,created,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
+	"Wed Oct 06 2010 20:29:04",23040,created,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
+	"Wed Oct 06 2010 20:29:04",2312320,created,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
+	"Wed Oct 06 2010 20:29:04",883579,created,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
+	"Wed Oct 06 2010 20:29:04",1550464,created,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
+	"Wed Oct 06 2010 20:29:04",1861760,created,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
+	"Wed Oct 06 2010 20:29:04",93561,created,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
+	"Wed Oct 06 2010 20:29:04",1540224,created,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
+	"Wed Oct 06 2010 20:29:04",1441920,created,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
+	"Wed Oct 06 2010 20:29:06",1730688,modified,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
+	"Wed Oct 06 2010 20:29:06",1845248,modified,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
+	"Wed Oct 06 2010 20:29:06",23040,modified,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
+	"Wed Oct 06 2010 20:29:06",2312320,modified,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
+	"Wed Oct 06 2010 20:29:06",883579,modified,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
+	"Wed Oct 06 2010 20:29:06",1550464,modified,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
+	"Wed Oct 06 2010 20:29:06",1861760,modified,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
+	"Wed Oct 06 2010 20:29:06",93561,modified,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
+	"Wed Oct 06 2010 20:29:06",1540224,modified,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
+	"Wed Oct 06 2010 20:29:06",1441920,modified,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
+	"Wed Sep 28 2011 00:00:00",1730688,accessed,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
+	"Wed Sep 28 2011 00:00:00",1845248,accessed,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
+	"Wed Sep 28 2011 00:00:00",83416,accessed,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
+	"Wed Sep 28 2011 00:00:00",23040,accessed,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
+	"Wed Sep 28 2011 00:00:00",2312320,accessed,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
+	"Wed Sep 28 2011 00:00:00",883579,accessed,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
+	"Wed Sep 28 2011 00:00:00",1550464,accessed,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
+	"Wed Sep 28 2011 00:00:00",1861760,accessed,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
+	"Wed Sep 28 2011 00:00:00",93561,accessed,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
+	"Wed Sep 28 2011 00:00:00",1540224,accessed,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
+	"Wed Sep 28 2011 00:00:00",1441920,accessed,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
+	"Wed Sep 28 2011 20:28:42",83416,created,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
 
 On peut alors visualiser l'image ci-dessous dont les informations complètent celles de la
 photo trouvée dans le scellé
