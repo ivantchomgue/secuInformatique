@@ -179,3 +179,8 @@ Toulouse au Mont Saint-Michel.
 L'image peut être visualisée ci-dessous 
 
 .. image:: img/image_map.png
+
+La commande exiftool sur l'image gif trouvée nous indique que l'image a été générée le 04
+octobre 2010 à 11h 07min 38 s GMT+2
+
+``File Modification Date/Time     : 2010:10:04 11:07:38+02:00``
