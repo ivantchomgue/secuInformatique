@@ -29,7 +29,7 @@
 \geometry{hmargin=1.5cm,vmargin=1.5cm}
 
 \title{\includegraphics{inp-enseeiht.png} \\ Tribunal de Grande Instance de l’N7 \\ ~ \\ Rapport d’expertise}
-\author{Élie {\sc Bouttier}\\Yvan {\sc Tchomgue}}
+\author{Élie {\sc Bouttier}\\Ivan {\sc Tchomgue} \\ Liangqi {\sc Gong}}
 \date\today
 
 \begin{document}
@@ -49,7 +49,7 @@
 
     Qualifications : Vol de voiture
 
-    Mission : expertise d’une clef USB de marque « Scandisk »
+    Mission : expertise d'une clef USB de marque « Scandisk »
 \end{abstract}
 
 \vspace{2cm}
@@ -89,9 +89,9 @@ L’expertise a été réalisée sous GNU/Linux, assistée des outils suivants :
 
 \section{Identification et copie du scellé n°1}
 
-Le scellé n°1 est une clef USB de marque « Scandisk », d’une capacité
+Le scellé n°1 est une clef USB de marque « Scandisk », d'une capacité
 approximative de 2Gio.
-Elle est ici identifié par {\tt /dev/sdc}, information révelé par {\tt dmesg}.
+Elle est ici identifiée par {\tt /dev/sdc}, information révelée par {\tt dmesg}.
 
 Sa capacité exacte est de 2000682496 octets comme révelé par l’outil
 {\tt blockdev } :
@@ -101,7 +101,7 @@ $ blockdev --getsize64 /dev/sdc
 \end{verbatim}
 
 Afin de vérifier l’intégrité des données, nous avons relevé deux empreintes des
-données présente sur la clef à l’aide des fonctions de hashage
+données présentee sur la clef à l’aide des fonctions de hashage
 {\tt md5} et {\tt sha256} :
 \begin{verbatim}
 # md5sum /dev/sdc
@@ -117,11 +117,11 @@ Le scellé n°1 a était copié avec la commande {\tt dd} :
 
 L’intégrité des données a immédiatement été vérifié.
 Dans la suite de ce rapport, toutes les analyses effectuées ont été lancé à
-partir d’une copie non altéré des données originelles.
+partir d’une copie non altérée des données originelles.
 
 \section{Données présentes sur la clef}
 
-La clef est formaté en {\tt vfat} comme le révèle la commande {\tt mount} :
+La clef est formatée en {\tt vfat} comme le révèle la commande {\tt mount} :
 \begin{verbatim}
 # losetup /dev/loop0 scelle-copie.img
 # mount -o ro /dev/loop0 /mnt
@@ -148,8 +148,8 @@ drwxr-xr-x 23 root root    4096 24 nov.  09:56 ..
 \end{verbatim}
 
 À l’exception du fichier « the whirling dancers.mp3 », les fichiers audio
-semblent valides et sont identique aux fichiers originels que l’on peut trouver
-sur internet (comparaison effectué à l’aide d’une somme de hashage {\tt sha256}).
+semblent valides et sont identiquee aux fichiers originels que l’on peut trouver
+sur internet (comparaison effectuée à l’aide d’une somme de hashage {\tt sha256}).
 
 Finalement, les fichiers semblant dignes d’intérêt sont :
 \begin{itemize}
@@ -164,7 +164,7 @@ Ci-dessous, la photo dites « 066 », tourné de 90° dans le sens horaire :
 
 \section{Informations recueillies}
 
-À partir des commandes présenté précédemment on tire les premières informations suivantes :
+À partir des commandes présentées précédemment on tire les premières informations suivantes :
 \begin{itemize}
     \item  Le fichier {\tt the whirling dancers.mp3} n'est pas un fichier
         audio mp3 comme son extension l'indique.
@@ -209,7 +209,7 @@ Ce qui donne par exemple::
 
 En appliquant ceci au fihier binaire {\tt the whirling dancers.mp3}
 c'est-à dire en remplaçant les premiers caractères par {\tt 00000000: ffd8 ffe1} soit en binaire
-la séquence « ÿØÿà », et en renommant le fichier en **the whirling dancers.jpg** on trouve
+la séquence « ÿØÿà », et en renommant le fichier en {\bf the whirling dancers.jpg} on trouve
 enfin l'image cachée sous cette suite de chiffres.
 
 On peut alors visualiser l'image ci-dessous dont les informations complètent celles de la
@@ -260,7 +260,7 @@ L'image peut être visualisée ci-dessous
 
 \includegraphics[width=\textwidth]{image_map.png}
 
-La commande exiftool sur l'image gif trouvée nous indique que l'image a été générée le 04
+La commande exiftool sur l'image gif trouvée nous indique que l'image a été modifiée le 04
 octobre 2010 à 11h 07min 38 s GMT+2
 \begin{verbatim}
 File Modification Date/Time     : 2010:10:04 11:07:38+02:00
