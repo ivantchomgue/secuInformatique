@@ -1,0 +1,70 @@
+\documentclass[a4paper,11pt]{article}
+
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage{xunicode}
+%\usepackage{listings}
+\usepackage[french]{babel}
+%\usepackage{url}
+%\usepackage{times}
+\usepackage{fontspec}
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\usepackage{a4wide}
+\usepackage{verbatim}
+\usepackage{polyglossia}
+\setdefaultlanguage{french}
+\usepackage{minted}
+\usepackage{graphicx}
+%\usepackage{graphviz}
+\usepackage{amssymb}
+\usepackage{float}
+
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=1.5cm}
+
+\graphicspath{{img/}}
+
+\title{\includegraphics{inp-enseeiht.png} \\ Tribunal de Grande Instance de l’N7 \\ ~ \\ Rapport d’expertise}
+\author{Élie {\sc Bouttier}\\Yvan {\sc Tchomgue}}
+\date\today
+
+\begin{document}
+
+\maketitle
+
+\vspace{2cm}
+
+\begin{abstract}
+    N° du Parquet : 1015800108
+
+    N° Instruction : 3/11/31
+
+    Procédure correctionnelle
+
+    Personne mise en examun : M. {\sc Zouzou}
+
+    Qualifications : Vol de voiture
+
+    Mission : expertise d’une clef USB de marque « Scandisk »
+\end{abstract}
+
+\vspace{2cm}
+
+\tableofcontents
+
+\newpage
+
+\section{Outils et commandes nécessaires}
+
+\begin{itemize}
+    \item \texttt{exiftool} pour l'analyse des images
+    \item \texttt{ls -l} pour vérifier les dernières dates de modifications d'un
+        fichier
+    \item \texttt{file} pour connaître le type réel d'un fichier
+    \item \texttt{xxd} convertit en représentation hexadécimale et inversement
+    \item \texttt{photorec} pour récupérer les fichiers supprimés d'un disque
+        mais on perd le nom du fichier
+    \item \texttt{sleuthkit} boîte à outils inforensique
+\end{itemize}
+
+\end{document}
