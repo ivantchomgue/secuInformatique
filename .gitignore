@@ -1,0 +1,8 @@
+*.swp
+*.aux
+*.pdf
+*.pyg
+*.toc
+*.out
+*.log
+README.tex
