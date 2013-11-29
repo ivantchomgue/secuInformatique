@@ -1,8 +1,8 @@
 *.swp
 *.aux
-*.pdf
 *.pyg
 *.toc
+rapport.pdf
 *.out
 *.log
 README.tex
