@@ -1,8 +1,25 @@
-Rapport du projet d'inforensique
-================================
+Rapport d'expertise inforensique
+********************************
 
-Outils et commandes nécessaires
--------------------------------
+Résumé
+======
+
+N° du Parquet : 1015800108
+
+N° Instruction : 3/11/31
+
+Procédure correctionnelle
+
+Personne mise en examen : M. Zouzou
+
+Qualifications : Vol de voiture
+
+Mission : expertise d’une clef USB de marque « Scandisk »
+
+Environnement de travail et outils utilisés
+===========================================
+
+L'expertise a été réalisée sous GNU/Linux, assistée des outils suivants :
 
 #. ``exiftool`` pour l'analyse des images
 
@@ -10,7 +27,7 @@ Outils et commandes nécessaires
 
 #. ``file`` pour connaître le type réel d'un fichier
 
-#. ``xxd`` convertit en représentation hexadécimale et inversement 
+#. ``xxd`` pour convertir un texte en représentation hexadécimale et inversement 
 
 #. ``photorec`` pour récupérer les fichiers supprimés d'un disque mais on perd le nom du fichier
 
@@ -32,8 +49,78 @@ Outils et commandes nécessaires
 #. ``fcrackzip`` pour trouver le mot de passe utilisé pour chiffrer une archive zip
 
 
-Informations déterminées via les commandes précédentes 
-------------------------------------------------------
+Identification et copie du scellé n° 1
+=======================================
+
+Le scellé n°1 est une clef USB de marque « Scandisk » , d’une capacité approximative de
+2Gio. Elle est
+ici identifiée par ``/dev/sdc``, information révelée par ``dmesg``.
+Sa capacité exacte est de 2000682496 octets comme révelé par l’outil ``blockdev`` ::
+
+    $ blockdev --getsize64 /dev/sdc
+    2000682496
+
+Afin de vérifier l’intégrité des données, nous avons relevé deux empreintes des données
+présentee sur la
+clef à l’aide des fonctions de hashage md5 et sha256 ::
+
+    # md5sum /dev/sdc
+    566144be8677312d7c9706618bab39be
+    # sha256sum /dev/sdc
+    d26536c335658a0954996a44d1f7114e5d29543ffcdd3dab04487e1e61794273
+
+Le scellé n°1 a était copié avec la commande ``dd`` ::
+
+    # ionice -c 3 dd if=/dev/sdc of=scelle.img bs=1M
+
+L’intégrité des données a immédiatement été vérifié. Dans la suite de ce rapport, toutes
+les analyses
+effectuées ont été lancé à partir d’une copie non altérée des données originelles.
+
+Données présentes sur la clef USB
+=================================
+
+La clef est formatée en ``vfat`` comme le révèle la commande ``mount`` ::
+
+    # losetup /dev/loop0 scelle-copie.img
+    # mount -o ro /dev/loop0 /mnt
+    $ mount | grep /mnt
+    /dev/loop0 on /mnt type vfat (ro,relatime,fmask=0022,dmask=0022,[...]
+
+On y trouve les fichiers suivants ::
+
+    $ ls -la /mnt
+    total 13076
+    drwxr-xr-x  2 root root   16384  1 janv.  1970 .
+    drwxr-xr-x 23 root root    4096 24 nov.  09:56 ..
+    -rwxr-xr-x  1 root root   23040  6 oct.   2010 Liste musique.xls
+    -rwxr-xr-x  1 root root  883579  6 oct.   2010 Photo 066.jpg
+    -rwxr-xr-x  1 root root 1540224  6 oct.   2010 be cool.mp3
+    -rwxr-xr-x  1 root root 1441920  6 oct.   2010 be like a bee.mp3
+    -rwxr-xr-x  1 root root 1730688  6 oct.   2010 chinese landscape.mp3
+    -rwxr-xr-x  1 root root 1845248  6 oct.   2010 construction.mp3
+    -rwxr-xr-x  1 root root 2312320  6 oct.   2010 pariba.mp3
+    -rwxr-xr-x  1 root root 1550464  6 oct.   2010 swirl of smoke.mp3
+    -rwxr-xr-x  1 root root 1861760  6 oct.   2010 the roof is on fire.mp3
+    -rwxr-xr-x  1 root root   93561  6 oct.   2010 the whirling dancers.mp3
+
+
+À l’exception du fichier « the whirling dancers.mp3 » , les fichiers audio semblent
+valides et sont identiquee
+aux fichiers originels que l’on peut trouver sur internet (comparaison effectuée à l’aide
+d’une somme de
+hashage ``sha256``).
+Finalement, les fichiers semblant dignes d’intérêt sont :
+* Liste musique.xls
+* Photo 066.jpg
+* the whirling dancers.mp3
+
+Ci-dessous, la photo dite « 066 » , tourné de 90° dans le sens horaire :
+
+.. image:: img/Photo-066.jpg
+
+Informations recueillies 
+========================
 
 À partir de ces commandes on tire les premières informations suivantes :
 
@@ -91,6 +178,10 @@ photo trouvée dans le scellé
 .. image:: img/thewhirlingdancers.jpg
 
 
+
+Données éffacées
+================
+
 Chronologie de création, d'accès et de modifications des fichiers du scellé
 ----------------------------------------------------------------------------
 
@@ -98,59 +189,59 @@ Pour un système de fichier FAT, ``mactime`` nous donne la chronologie suivante,
 partir d'un fichier généré par la commande ``fls -m``
 
 .. csv-table:: Chronologie de création, d'accès et de modification des fichiers
-	:header: "Date", "Size (Bytes)", "Type", "Mode", "User ID", "Group ID", "Inode", "File Name"
+	:header: "Date", "Size (Bytes)", "Type", "Mode", "UID", "GID", "Inode", "File Name"
 
-	"Thu Jan 01 1970 01:00:00",1730688,N/A,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
-	"Thu Jan 01 1970 01:00:00",1845248,N/A,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
-	"Thu Jan 01 1970 01:00:00",83416,N/A,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
-	"Thu Jan 01 1970 01:00:00",23040,N/A,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
-	"Thu Jan 01 1970 01:00:00",2312320,N/A,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
-	"Thu Jan 01 1970 01:00:00",883579,N/A,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
-	"Thu Jan 01 1970 01:00:00",1550464,N/A,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
-	"Thu Jan 01 1970 01:00:00",1861760,N/A,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
-	"Thu Jan 01 1970 01:00:00",93561,N/A,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
-	"Thu Jan 01 1970 01:00:00",1540224,N/A,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
-	"Thu Jan 01 1970 01:00:00",1441920,N/A,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
-	"Wed Oct 06 2010 19:29:14",83416,Written,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
-	"Wed Oct 06 2010 20:29:04",1730688,Created,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
-	"Wed Oct 06 2010 20:29:04",1845248,Created,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
-	"Wed Oct 06 2010 20:29:04",23040,Created,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
-	"Wed Oct 06 2010 20:29:04",2312320,Created,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
-	"Wed Oct 06 2010 20:29:04",883579,Created,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
-	"Wed Oct 06 2010 20:29:04",1550464,Created,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
-	"Wed Oct 06 2010 20:29:04",1861760,Created,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
-	"Wed Oct 06 2010 20:29:04",93561,Created,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
-	"Wed Oct 06 2010 20:29:04",1540224,Created,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
-	"Wed Oct 06 2010 20:29:04",1441920,Created,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
-	"Wed Oct 06 2010 20:29:06",1730688,Written,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
-	"Wed Oct 06 2010 20:29:06",1845248,Written,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
-	"Wed Oct 06 2010 20:29:06",23040,Written,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
-	"Wed Oct 06 2010 20:29:06",2312320,Written,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
-	"Wed Oct 06 2010 20:29:06",883579,Written,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
-	"Wed Oct 06 2010 20:29:06",1550464,Written,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
-	"Wed Oct 06 2010 20:29:06",1861760,Written,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
-	"Wed Oct 06 2010 20:29:06",93561,Written,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
-	"Wed Oct 06 2010 20:29:06",1540224,Written,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
-	"Wed Oct 06 2010 20:29:06",1441920,Written,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
-	"Wed Sep 28 2011 00:00:00",1730688,Accessed,r/rr-xr-xr-x,0,0,10,"USB/chinese landscape.mp3"
-	"Wed Sep 28 2011 00:00:00",1845248,Accessed,r/rr-xr-xr-x,0,0,13,"USB/construction.mp3"
-	"Wed Sep 28 2011 00:00:00",83416,Accessed,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
-	"Wed Sep 28 2011 00:00:00",23040,Accessed,r/rr-xr-xr-x,0,0,17,"USB/Liste musique.xls"
-	"Wed Sep 28 2011 00:00:00",2312320,Accessed,r/rr-xr-xr-x,0,0,18,"USB/pariba.mp3"
-	"Wed Sep 28 2011 00:00:00",883579,Accessed,r/rr-xr-xr-x,0,0,20,"USB/Photo 066.jpg"
-	"Wed Sep 28 2011 00:00:00",1550464,Accessed,r/rr-xr-xr-x,0,0,23,"USB/swirl of smoke.mp3"
-	"Wed Sep 28 2011 00:00:00",1861760,Accessed,r/rr-xr-xr-x,0,0,26,"USB/the roof is on fire.mp3"
-	"Wed Sep 28 2011 00:00:00",93561,Accessed,r/rr-xr-xr-x,0,0,29,"USB/the whirling dancers.mp3"
-	"Wed Sep 28 2011 00:00:00",1540224,Accessed,r/rr-xr-xr-x,0,0,4,"USB/be cool.mp3"
-	"Wed Sep 28 2011 00:00:00",1441920,Accessed,r/rr-xr-xr-x,0,0,7,"USB/be like a bee.mp3"
-	"Wed Sep 28 2011 20:28:42",83416,Created,r/rr-xr-xr-x,0,0,14,"USB/_tin.7z (deleted)"
+	"Thu Jan 01 1970 01:00:00",1730688,N/A,r/rr-xr-xr-x,0,0,10,"/chinese landscape.mp3"
+	"Thu Jan 01 1970 01:00:00",1845248,N/A,r/rr-xr-xr-x,0,0,13,"/construction.mp3"
+	"Thu Jan 01 1970 01:00:00",83416,N/A,r/rr-xr-xr-x,0,0,14,"/_tin.7z (deleted)"
+	"Thu Jan 01 1970 01:00:00",23040,N/A,r/rr-xr-xr-x,0,0,17,"/Liste musique.xls"
+	"Thu Jan 01 1970 01:00:00",2312320,N/A,r/rr-xr-xr-x,0,0,18,"/pariba.mp3"
+	"Thu Jan 01 1970 01:00:00",883579,N/A,r/rr-xr-xr-x,0,0,20,"/Photo 066.jpg"
+	"Thu Jan 01 1970 01:00:00",1550464,N/A,r/rr-xr-xr-x,0,0,23,"/swirl of smoke.mp3"
+	"Thu Jan 01 1970 01:00:00",1861760,N/A,r/rr-xr-xr-x,0,0,26,"/the roof is on fire.mp3"
+	"Thu Jan 01 1970 01:00:00",93561,N/A,r/rr-xr-xr-x,0,0,29,"/the whirling dancers.mp3"
+	"Thu Jan 01 1970 01:00:00",1540224,N/A,r/rr-xr-xr-x,0,0,4,"/be cool.mp3"
+	"Thu Jan 01 1970 01:00:00",1441920,N/A,r/rr-xr-xr-x,0,0,7,"/be like a bee.mp3"
+	"Wed Oct 06 2010 19:29:14",83416,Written,r/rr-xr-xr-x,0,0,14,"/_tin.7z (deleted)"
+	"Wed Oct 06 2010 20:29:04",1730688,Created,r/rr-xr-xr-x,0,0,10,"/chinese landscape.mp3"
+	"Wed Oct 06 2010 20:29:04",1845248,Created,r/rr-xr-xr-x,0,0,13,"/construction.mp3"
+	"Wed Oct 06 2010 20:29:04",23040,Created,r/rr-xr-xr-x,0,0,17,"/Liste musique.xls"
+	"Wed Oct 06 2010 20:29:04",2312320,Created,r/rr-xr-xr-x,0,0,18,"/pariba.mp3"
+	"Wed Oct 06 2010 20:29:04",883579,Created,r/rr-xr-xr-x,0,0,20,"/Photo 066.jpg"
+	"Wed Oct 06 2010 20:29:04",1550464,Created,r/rr-xr-xr-x,0,0,23,"/swirl of smoke.mp3"
+	"Wed Oct 06 2010 20:29:04",1861760,Created,r/rr-xr-xr-x,0,0,26,"/the roof is on fire.mp3"
+	"Wed Oct 06 2010 20:29:04",93561,Created,r/rr-xr-xr-x,0,0,29,"/the whirling dancers.mp3"
+	"Wed Oct 06 2010 20:29:04",1540224,Created,r/rr-xr-xr-x,0,0,4,"/be cool.mp3"
+	"Wed Oct 06 2010 20:29:04",1441920,Created,r/rr-xr-xr-x,0,0,7,"/be like a bee.mp3"
+	"Wed Oct 06 2010 20:29:06",1730688,Written,r/rr-xr-xr-x,0,0,10,"/chinese landscape.mp3"
+	"Wed Oct 06 2010 20:29:06",1845248,Written,r/rr-xr-xr-x,0,0,13,"/construction.mp3"
+	"Wed Oct 06 2010 20:29:06",23040,Written,r/rr-xr-xr-x,0,0,17,"/Liste musique.xls"
+	"Wed Oct 06 2010 20:29:06",2312320,Written,r/rr-xr-xr-x,0,0,18,"/pariba.mp3"
+	"Wed Oct 06 2010 20:29:06",883579,Written,r/rr-xr-xr-x,0,0,20,"/Photo 066.jpg"
+	"Wed Oct 06 2010 20:29:06",1550464,Written,r/rr-xr-xr-x,0,0,23,"/swirl of smoke.mp3"
+	"Wed Oct 06 2010 20:29:06",1861760,Written,r/rr-xr-xr-x,0,0,26,"/the roof is on fire.mp3"
+	"Wed Oct 06 2010 20:29:06",93561,Written,r/rr-xr-xr-x,0,0,29,"/the whirling dancers.mp3"
+	"Wed Oct 06 2010 20:29:06",1540224,Written,r/rr-xr-xr-x,0,0,4,"/be cool.mp3"
+	"Wed Oct 06 2010 20:29:06",1441920,Written,r/rr-xr-xr-x,0,0,7,"/be like a bee.mp3"
+	"Wed Sep 28 2011 00:00:00",1730688,Accessed,r/rr-xr-xr-x,0,0,10,"/chinese landscape.mp3"
+	"Wed Sep 28 2011 00:00:00",1845248,Accessed,r/rr-xr-xr-x,0,0,13,"/construction.mp3"
+	"Wed Sep 28 2011 00:00:00",83416,Accessed,r/rr-xr-xr-x,0,0,14,"/_tin.7z (deleted)"
+	"Wed Sep 28 2011 00:00:00",23040,Accessed,r/rr-xr-xr-x,0,0,17,"/Liste musique.xls"
+	"Wed Sep 28 2011 00:00:00",2312320,Accessed,r/rr-xr-xr-x,0,0,18,"/pariba.mp3"
+	"Wed Sep 28 2011 00:00:00",883579,Accessed,r/rr-xr-xr-x,0,0,20,"/Photo 066.jpg"
+	"Wed Sep 28 2011 00:00:00",1550464,Accessed,r/rr-xr-xr-x,0,0,23,"/swirl of smoke.mp3"
+	"Wed Sep 28 2011 00:00:00",1861760,Accessed,r/rr-xr-xr-x,0,0,26,"/the roof is on fire.mp3"
+	"Wed Sep 28 2011 00:00:00",93561,Accessed,r/rr-xr-xr-x,0,0,29,"/the whirling dancers.mp3"
+	"Wed Sep 28 2011 00:00:00",1540224,Accessed,r/rr-xr-xr-x,0,0,4,"/be cool.mp3"
+	"Wed Sep 28 2011 00:00:00",1441920,Accessed,r/rr-xr-xr-x,0,0,7,"/be like a bee.mp3"
+	"Wed Sep 28 2011 20:28:42",83416,Created,r/rr-xr-xr-x,0,0,14,"/_tin.7z (deleted)"
 
 L'une des informations que l'on peut tirer de ce tableau est que l'image contient une
 archive 7z qui a été suppimée. Il convient donc de récupérer cette archive et de trouver
 ce qui s'y cache comme informations supplémentaires.
 
 Ce qui se se cache sous l'archive
----------------------------------
+=================================
 
 La commande ``icat`` de la boîte à outils sleuthkit nous permet de récupérer le fichier
 supprimé de l'image. Une fois récupérer on se rend compte que l'archive est protégée par
